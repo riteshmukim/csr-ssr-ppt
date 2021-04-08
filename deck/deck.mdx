@@ -1,0 +1,189 @@
+import { book, prism } from "@mdx-deck/themes";
+import { Image } from "mdx-deck";
+
+export const theme = {
+  ...book,
+  ...prism,
+};
+
+<Head>
+  <title>CSR and SSR</title>
+</Head>
+
+# Server Side Rendering & Client Side Rendering
+
+---
+
+### Ritesh Mukim
+
+Engineer @ BookMyShow  
+[@riteshmukim](https://twitter.com/riteshmukim)
+
+---
+
+# What is CSR - Client Side Rendering?
+
+<Steps>
+
+- Rendering pages directly in the browser using JavaScript
+- All logic, data fetching, templating and routing are handled on the client rather than the server
+- React, Angular, Vue, Preact and other frameworks are used for CSR.
+
+</Steps>
+
+---
+
+### CSR Rendering Flow
+
+import csrImg from "../assets/client-rendering-tti.png";
+
+<Image src={csrImg} style={{ height: "80%", backgroundSize: "contain" }} />
+
+---
+
+<a href="http://localhost:3000/" target="_blank">
+  Example!
+</a>
+
+---
+
+### CSR pros:
+
+- Rich site interactions
+- Fast website rendering after the initial load
+- Great for web applications
+- Robust selection of JavaScript libraries
+
+---
+
+### CSR cons:
+
+- Low SEO if not implemented correctly
+- Initial load might require more time
+- In most cases, requires an external library
+
+---
+
+# What is SSR - Server Side Rendering?
+
+<Steps>
+
+- Rendering pages on the server and sending HTML to the browser
+- All logic, data fetching, templating and routing are handled on the server
+- Express, Koa, Fastify are used for SSR.
+
+</Steps>
+
+---
+
+### SSR Rendering Flow
+
+import ssrImg from "../assets/server-rendering-tti.png";
+
+<Image src={ssrImg} style={{ height: "80%", backgroundSize: "contain" }} />
+
+---
+
+<a href="http://localhost:8500" target="_blank">
+  Example!
+</a>
+
+---
+
+### SSR pros:
+
+- Search engines can crawl the site for better SEO
+- The initial page load is faster
+- Great for static sites
+
+---
+
+### SSR cons:
+
+- Frequent server requests
+- An overall slow page rendering
+- Full page reloads
+- Non-rich site interactions
+
+---
+
+## Both _CSR_ and _SSR_ cannot provide the required performance
+
+# 🤯
+
+---
+
+# Then what should we use 🤔 ???
+
+---
+
+# _SSR with (Re)hydration_ comes to the rescue 🤓
+
+---
+
+# What is meant by _SSR with (Re)hydration_ ?
+
+<Steps>
+
+- Rendering dynamic pages on the server and sending HTML to the browser
+- The whole web page is then hydrated in the Client Side
+- Once the page is loaded, the control is handed ovet to Client or Browser
+- Next JS, Razzle JS, etc provides this solution
+
+</Steps>
+
+---
+
+### SSR with (Re)hydration pros:
+
+- Less server requests, i.e. only first request is served directly from server
+- Faster page rendering
+- Rich site interactions
+
+---
+
+### SSR with (Re)hydration cons:
+
+- Higher TTI time
+
+---
+
+### SSR with (Re)hydration Rendering Flow
+
+import ssrReImg from "../assets/rehydration-tti.png";
+
+<Image src={ssrReImg} style={{ height: "80%", backgroundSize: "contain" }} />
+
+---
+
+### Rendering Flow Comparison
+
+import renderingImg from "../assets/infographic-rendering.png";
+
+<Image
+  src={renderingImg}
+  style={{ height: "80%", backgroundSize: "contain" }}
+/>
+
+---
+
+## Example
+
+Our M6 and V3 code base
+
+---
+
+### Any Questions 🙋‍♂️
+
+---
+
+### Thank you 👻
+
+---
+
+#### References
+
+- [Google Developers](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
+- [Clarion Tech](https://www.clariontech.com/blog/server-side-rendering-vs.-client-side-rendering)
+
+#### Presentation is made by using [_mdx-deck_](https://github.com/jxnblk/mdx-deck)
