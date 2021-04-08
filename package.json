@@ -1,0 +1,10 @@
+{
+  "name": "ssr-csr-ppt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@mdx-deck/themes": "^4.1.0",
+    "mdx-deck": "^4.1.1"
+  }
+}
