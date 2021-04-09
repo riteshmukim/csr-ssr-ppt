@@ -10,7 +10,8 @@ export default (() => {
       },
     },
   });
-  theme = theme.replaceAll(
+
+  theme = theme.replace(
     /backgroundColor":"#f6f8fa/g,
     'backgroundColor":"transparent'
   );
