@@ -1,5 +1,13 @@
 import { book, prism } from "@mdx-deck/themes";
 import { Image } from "mdx-deck";
+import { CodeSurfer } from "code-surfer";
+
+import codeTheme from "../components/custom-theme";
+
+import csrImg from "../assets/client-rendering-tti.png";
+import ssrImg from "../assets/server-rendering-tti.png";
+import ssrReImg from "../assets/rehydration-tti.png";
+import renderingImg from "../assets/infographic-rendering.png";
 
 export const theme = {
   ...book,
@@ -34,8 +42,6 @@ Engineer @ BookMyShow
 ---
 
 ### CSR Rendering Flow
-
-import csrImg from "../assets/client-rendering-tti.png";
 
 <Image src={csrImg} style={{ height: "80%", backgroundSize: "contain" }} />
 
@@ -77,8 +83,6 @@ import csrImg from "../assets/client-rendering-tti.png";
 ---
 
 ### SSR Rendering Flow
-
-import ssrImg from "../assets/server-rendering-tti.png";
 
 <Image src={ssrImg} style={{ height: "80%", backgroundSize: "contain" }} />
 
@@ -150,15 +154,11 @@ import ssrImg from "../assets/server-rendering-tti.png";
 
 ### SSR with (Re)hydration Rendering Flow
 
-import ssrReImg from "../assets/rehydration-tti.png";
-
 <Image src={ssrReImg} style={{ height: "80%", backgroundSize: "contain" }} />
 
 ---
 
 ### Rendering Flow Comparison
-
-import renderingImg from "../assets/infographic-rendering.png";
 
 <Image
   src={renderingImg}
@@ -170,6 +170,156 @@ import renderingImg from "../assets/infographic-rendering.png";
 ## Example
 
 Our M6 and V3 code base
+
+---
+
+<CodeSurfer theme={codeTheme}>
+
+```js title="Serving Request in M6 - src/server/routing/preload/index.js"
+export default (app, Router) => {
+  const router = new Router({ prefix: "/" });
+
+  router.get(
+    "(.*)",
+    render,
+    mapStateToCookies,
+    aliasRouting,
+    regionalRouting,
+    setDefaultState,
+    preloadState,
+    modifyState,
+    logoutUser,
+    hyderateState
+  );
+};
+```
+
+```diff 6 title="First Middleware"
+
+```
+
+```diff 7 title="Second Middleware"
+
+```
+
+```diff 8 title="Third Middleware"
+
+```
+
+```diff 9 title="Fourth Middleware"
+
+```
+
+```diff 10 title="Fifth Middleware"
+
+```
+
+```diff 11 title="Sixth Middleware"
+
+```
+
+```diff 12 title="Seventh Middleware"
+
+```
+
+```diff 13 title="Eighth Middleware"
+
+```
+
+```diff 14 title="Nineth Middleware"
+
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={codeTheme}>
+
+```js 1:3 title="Hydrate Middleware - site/src/server/middlewares/HyderateState.js"
+export default async function hyderateState(ctx, next) {
+  const { preloadedState: state, appConfig = null, cookies = {} } = ctx.state;
+  const redirect = ctx.result && ctx.result.type === "redirect";
+
+  if (state && !redirect) {
+    const store = configureStore({
+      ...state,
+      appConfig,
+      cookies: ctx.state.cookies,
+      config,
+      seo: ctx.state.seo || null,
+    });
+    const reduxState = store.getState();
+    const Route = getRoutes(reduxState);
+    const component = (
+      <Provider store={store}>
+        <StaticRouter location={ctx.request.originalUrl} context={context}>
+          {Route}
+        </StaticRouter>
+      </Provider>
+    );
+
+    const sheet = new ServerStyleSheet();
+    sheet.collectStyles(component);
+
+    const renderComponent = renderToString(component);
+
+    if (getIn(context, ["action"]) === "REPLACE") {
+      ctx.res.writeHead(302, { Location: context.url });
+      ctx.res.end();
+    } else {
+      const HtmlString = renderToString(
+        <HTML
+          state={reduxState}
+          request={ctx.request}
+          component={renderComponent}
+          chunkName={ctx.chunkName}
+          isModernUser={ctx.isModernUser}
+          SEOData={getSEOData(ctx.state.SEOData)}
+          pageSchema={ctx.state.pageSchema}
+          pageMetaTags={ctx.state.pageMetaTags}
+          devHost={ctx.request.header.host}
+          styledSheets={sheet && sheet.getStyleElement()}
+          previewMeta={ctx.state.previewMeta}
+          ucbrowser={ctx.request.header["x-ucbrowser-ua"]}
+          isInternetExplorer={checkIfIE(
+            getIn(ctx, ["headers", "user-agent"] || "")
+          )}
+        />
+      );
+      ctx.type = "text/html";
+      ctx.result = `<!DOCTYPE html>${HtmlString}`;
+    }
+  }
+  await next();
+}
+```
+
+```diff 5:13 title="Prepare Redux Store"
+
+```
+
+```diff 14:21 title="Get component for the Route"
+
+```
+
+```diff 22:24 title="Extract styled-components styles"
+
+```
+
+```diff 26 title="Generate server side string from React component"
+
+```
+
+```diff 28:30 title="If redirect, Send response"
+
+```
+
+```diff 32:50 title="Generate HTML Document with the components"
+
+```
+
+</CodeSurfer>
 
 ---
 
